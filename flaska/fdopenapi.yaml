@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: 敏盛醫院 單張交換 to FHIR - API 使用說明書
+  title: 方鼎 單張資料 FHIR - API 使用說明書
   description: |-
-    新光醫院 交換單張 XML to FHIR :
+    方鼎FHIR - API :
 
             API 0.1.0 based on the OpenAPI 3.0 specification.
 
     概述 : 
 
-            將現行交換單張XML轉成FHIR 並存入FHIR Server
+            FHIR Server RESTful API - GET 取得資料
 
     對象 :
 
@@ -16,20 +16,17 @@ info:
             
     方法 : 
             
-            依現行衛生福利部電子病歷FHIR推動專區公告標準，將欄位對應至FHIR相對resourceType欄位，存入FHIR Server
+            依現行衛生福利部電子病歷FHIR推動專區公告標準，從FHIR Server 取得資料
 
     配套 : 
 
-            上傳後至FHIR Portal，查詢上傳資料狀態
+            使用FHIR API，查詢資料
 
     注意事項 :
     
-            1.Request body 內 Example Value 與 Schema 僅為說明格式，section 及 entry 重複格式不逐一說明，詳細說明請參照範例資料註解
-            2.測試時請由下方連結下載範例資料複製貼上至 Request body 內 Example Value 執行
-            3.後續維護更新責任者-緯謙科技
+            後續維護更新責任者-緯謙科技
 
     Some useful links:
-    - [門診病例CDAR2 XML測試資料](/VisitNote)
     - [衛生福利部電子病歷FHIR推動專區](https://emr.mohw.gov.tw/myemr/fhir.html)
     - [緯謙科技](https://www.wiadvance.com/)
     
@@ -49,7 +46,7 @@ externalDocs:
   description: Find out more about 緯謙科技
   url: https://www.wiadvance.com/
 servers:
-  - url: http://202.5.253.182:8888
+  - url: http://202.5.253.182:8080/fhir
 tags:
   - name: 交換單張
     description: 公告交換單張標準
@@ -57,44 +54,21 @@ tags:
       description: 衛生福利部電子病歷FHIR推動專區
       url: https://emr.mohw.gov.tw/myemr/fhir.html
 paths:
-  /:
+  /Composition:
     get:
       tags:
-        - Server
-      summary: 回傳伺服器狀態
-      description: 回傳伺服器狀態
-
-      operationId: getInventory
-      parameters: []
+        - 門診病歷
+      summary: 取得門診病歷
+      description: 取得門診病歷資料
+      operationId: get_VisitNotes
       responses:
         '200':
-          description: "Server Status : run (正常)"
-        '500':
-          description: "internal server error (內部伺服器錯誤)"
-  /VisitNote:
-    post:
-      tags:
-        - 門診病歷
-      summary: 新增門診病歷
-      description: 將門診病歷 XML轉為FHIR並儲存至FHIR server
-      operationId: add_VisitNote
-      requestBody:
-        description: Composition_VisitNote
-        content:
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/ContentPackage'
-        required: true
-      responses:
-        '201':
           description: Successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
-      security:
-         - api_key: []
-  /VisitNote/{VisitNote_Id}:
+  /Composition/{VisitNote_Id}:
     get:
       tags:
         - 門診病歷
@@ -111,58 +85,12 @@ paths:
             format: int64
       responses:
         '200':
-          description: "message: GET"
-    put:
-      tags:
-        - 門診病歷
-      summary: 更新門診病歷
-      description: 更新門診病歷資料
-      operationId: put_VisitNote
-      parameters: 
-        - name: VisitNote_Id
-          in: path
-          description: ID of VisitNote to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        description: Composition_VisitNote
-        content:
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/ContentPackage'
-      responses:
-        '200':
           description: Successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
-      security:
-        - wiadvance_auth:
-            - put:VisitNote
-    delete:
-      tags:
-        - 門診病歷
-      summary: 刪除門診病歷
-      description: 刪除門診病歷資料
-      operationId: delete_VisitNote
-      parameters: 
-        - name: VisitNote_Id
-          in: path
-          description: ID of VisitNote to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: "message: Delete"
-      security:
-        - wiadvance_auth:
-            - delete:VisitNote
-        
+
 components:
   schemas:
     ContentPackage:
