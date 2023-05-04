@@ -3,8 +3,8 @@ version: "3.7"
 services: 
   flask:
     build: ./flaska
-    container_name: skhswaggerflask
-    image: skhswaggerflask:0.1.0
+    container_name: mshswaggerflask
+    image: mshswaggerflask:0.1.0
     restart: always
     environment:
       - APP_NAME=FlaskApp
@@ -14,8 +14,8 @@ services:
     
   nginx:
     build: ./nginxd
-    container_name: skhswaggerflask_nginx
-    image: skhswaggerflask:1.0.0
+    container_name: mshswaggernginx
+    image: mshswaggernginx:1.0.0
     restart: always
     ports:
       - "8800:8800"
