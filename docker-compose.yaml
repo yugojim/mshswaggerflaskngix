@@ -8,18 +8,17 @@ services:
     restart: always
     environment:
       - APP_NAME=FlaskApp
-    expose:
-        - 5000
-    #ports:    
-    
+    #expose:
+    #    - 8200
+    ports:    
+       - "8200:8200"
   nginx:
     build: ./nginxd
     container_name: mshswaggernginx
     image: mshswaggernginx:1.0.0
     restart: always
     ports:
-      - "8800:8800"
-      #- "443:443" 
+      - "8250:8250"
     depends_on:
       - flask
       
