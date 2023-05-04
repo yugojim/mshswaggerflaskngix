@@ -11,7 +11,7 @@ def swagger_ui():
 
 @app.route('/yaml')
 def yamldownload():
-    return send_from_directory(app.root_path, 'fdopenapi.yaml')
+    return send_from_directory(app.root_path, 'msh-swagger.yaml')
     
 @app.route('/VisitNote')
 def VisitNote():

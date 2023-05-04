@@ -71,13 +71,22 @@ paths:
           description: "Server Status : run (正常)"
         '500':
           description: "internal server error (內部伺服器錯誤)"
-  /VisitNote:
+
+  /VisitNote/{VisitNote_Id}:
     post:
       tags:
         - 門診病歷
       summary: 新增門診病歷
       description: 將門診病歷 XML轉為FHIR並儲存至FHIR server
       operationId: add_VisitNote
+      parameters: 
+        - name: VisitNote_Id
+          in: path
+          description: ID of VisitNote to return
+          required: true
+          schema:
+            type: string
+            format: string
       requestBody:
         description: Composition_VisitNote
         content:
@@ -94,7 +103,6 @@ paths:
                 $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
       security:
          - api_key: []
-  /VisitNote/{VisitNote_Id}:
     get:
       tags:
         - 門診病歷
@@ -107,8 +115,8 @@ paths:
           description: ID of VisitNote to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: string
       responses:
         '200':
           description: "message: GET"
@@ -124,8 +132,8 @@ paths:
           description: ID of VisitNote to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: string
       requestBody:
         description: Composition_VisitNote
         content:
@@ -154,8 +162,8 @@ paths:
           description: ID of VisitNote to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: string
       responses:
         '200':
           description: "message: Delete"
@@ -191,7 +199,7 @@ components:
                           example: ""
                         title:
                             type: string
-                            example: "出院病摘單"
+                            example: "門診病歷"
                         effectiveTime:
                           type: object
                           properties:
@@ -708,7 +716,7 @@ components:
         author:
           - reference: https://fhirtest.uhn.ca/baseR4/Practitioner/129288
             display: 賴一施
-        title: 出院病摘
+        title: 門診病歷
         confidentiality: 'N'
         attester:
           - mode: professional
