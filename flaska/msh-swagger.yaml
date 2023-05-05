@@ -49,7 +49,7 @@ externalDocs:
   description: Find out more about 緯謙科技
   url: https://www.wiadvance.com/
 servers:
-  - url: http://202.5.253.182:8888
+  - url: http://202.5.253.182:8100
 tags:
   - name: 交換單張
     description: 公告交換單張標準
