@@ -37,8 +37,8 @@ info:
     - [電話 : 02-66126262]
     - [分機 : 14711 ]
 
-    - [WIA FHIR Portal](http://202.5.253.182:8000/)
-    - [WIA FHIR server](http://202.5.253.182:8080/)
+    - [WIA FHIR Portal](http://211.73.81.25:8000/)
+    - [WIA FHIR server](http://211.73.81.25:8080/)
   contact:
     email: Gojim.Yu@wiadvance.com
   license:
@@ -49,6 +49,8 @@ externalDocs:
   description: Find out more about 緯謙科技
   url: https://www.wiadvance.com/
 servers:
+  - url: http://211.73.81.25:8100
+    description: 敏盛資料
   - url: http://202.5.253.182:8100
     description: 敏盛虛擬資料
   - url: http://104.208.68.39:8100
@@ -74,6 +76,47 @@ paths:
           description: "Server Status : run (正常)"
         '500':
           description: "internal server error (內部伺服器錯誤)"
+          
+  /Consent/:
+    get:
+      tags:
+        - 知情同意查詢
+      summary: 知情同意查詢
+      description: 知情同意查詢
+
+      operationId: getConsent
+      parameters: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consent_ApiResponse_JSON'
+                
+  /Consent/{Consent_Id}:
+    get:
+      tags:
+        - 知情同意查詢
+      summary: 知情同意查詢
+      description: 知情同意查詢
+
+      operationId: get_Consent_Id
+      parameters: 
+        - name: Consent_Id
+          in: path
+          description: ID of Consent to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consent_ApiResponse_JSON'
 
   /VisitNote/:
     get:
@@ -81,7 +124,7 @@ paths:
         - 門診病歷
       summary: 取得門診病歷
       description: 取得門診病歷資料
-      operationId: get_VisitNote
+      operationId: get_all_VisitNote
       parameters: 
         - name: Patient_Id
           in: query
@@ -108,13 +151,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
+                
   /VisitNote/{VisitNote_Id}:
     get:
       tags:
         - 門診病歷
       summary: 取得門診病歷
       description: 取得門診病歷資料
-      operationId: add_VisitNote
+      operationId: get_VisitNote
       parameters: 
         - name: VisitNote_Id
           in: path
@@ -161,56 +205,6 @@ paths:
       security:
          - api_key: []
 
-    put:
-      tags:
-        - 門診病歷
-      summary: 更新門診病歷
-      description: 更新門診病歷資料
-      operationId: put_VisitNote
-      parameters: 
-        - name: VisitNote_Id
-          in: path
-          description: ID of VisitNote to update
-          required: true
-          schema:
-            type: string
-            format: string
-      requestBody:
-        description: Composition_VisitNote
-        content:
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/ContentPackage'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
-      security:
-        - wiadvance_auth:
-            - put:VisitNote
-    delete:
-      tags:
-        - 門診病歷
-      summary: 刪除門診病歷
-      description: 刪除門診病歷資料
-      operationId: delete_VisitNote
-      parameters: 
-        - name: VisitNote_Id
-          in: path
-          description: ID of VisitNote to delete
-          required: true
-          schema:
-            type: string
-            format: string
-      responses:
-        '200':
-          description: "message: Delete"
-      security:
-        - wiadvance_auth:
-            - delete:VisitNote
         
 components:
   schemas:
@@ -621,6 +615,85 @@ components:
               div: '<div xmlns="http://www.w3.org/1999/xhtml"><br/><table><tr><b>出院診斷:</b></tr><tr>結核病(Tuberculosis)</tr></table></div>'
             entry:
               - reference: https://fhirtest.uhn.ca/baseR4/Condition/128907
+    Consent_ApiResponse_JSON:
+      type: object
+      properties:
+        resourceType:
+          type: string
+        id:
+          type: string
+        meta:
+          type: object
+          properties:
+            versionId:
+              type: string
+            lastUpdated:
+              type: string
+            source:
+              type: string
+        scope:
+          type: object
+          properties:
+            coding:
+              type: object
+              properties:
+                system:
+                  type: string
+                code:
+                  type: string
+        category:
+          type: object
+          properties:
+            coding:
+              type: object
+              properties:
+                system:
+                  type: string
+                code:
+                  type: string
+        status:
+          type: string
+
+        patient:
+          type: object
+          properties:
+            reference:
+              type: string
+            display:
+              type: string
+
+        dateTime:
+          type: string
+
+        provision:
+          type: object
+          properties:
+            type:
+              type: string
+
+      example:
+        resourceType: 'Consent'
+        id: 'U221776330'
+        meta:
+          versionId: '1'
+          lastUpdated: '2023-03-08T06:42:02.621+00:00'
+          source: '#E3Wp8IdPMe08QsvA'
+        status: 'active'
+        scope:
+          coding:
+            - system: 'http://terminology.hl7.org/CodeSystem/consentscope'
+              code: 'patient-privacy'
+        category:
+          coding:
+            - system: 'http://loinc.org'
+              code: '59284-0'
+        subject:
+          reference: 'https://fhirtest.uhn.ca/baseR4/Patient/129257'
+        dateTime: '2010-08-01T11:34:00'
+        provision: 
+          type: 'permit'
+
+              
     Composition_DischargeSummary_ApiResponse_JSON:
       type: object
       properties:

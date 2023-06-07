@@ -50,6 +50,9 @@ externalDocs:
   url: https://www.wiadvance.com/
 servers:
   - url: http://202.5.253.182:8100
+    description: 敏盛虛擬資料
+  - url: http://104.208.68.39:8100
+    description: 緯謙虛擬資料
 tags:
   - name: 交換單張
     description: 公告交換單張標準
@@ -72,7 +75,61 @@ paths:
         '500':
           description: "internal server error (內部伺服器錯誤)"
 
+  /VisitNote/:
+    get:
+      tags:
+        - 門診病歷
+      summary: 取得門診病歷
+      description: 取得門診病歷資料
+      operationId: get_VisitNote
+      parameters: 
+        - name: Patient_Id
+          in: query
+          description: Patient_Id of VisitNote to return
+          schema:
+            type: string
+            format: string
+        - name: mtDate
+          in: query
+          description: more than date yyyy-mm-dd (2010-01-01)
+          schema:
+            type: string
+            format: string
+        - name: ltDate
+          in: query
+          description: less than date yyyy-mm-dd (2010-01-01)
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
   /VisitNote/{VisitNote_Id}:
+    get:
+      tags:
+        - 門診病歷
+      summary: 取得門診病歷
+      description: 取得門診病歷資料
+      operationId: add_VisitNote
+      parameters: 
+        - name: VisitNote_Id
+          in: path
+          description: ID of VisitNote to return
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
     post:
       tags:
         - 門診病歷
@@ -103,23 +160,7 @@ paths:
                 $ref: '#/components/schemas/Composition_VisitNote_ApiResponse_JSON'
       security:
          - api_key: []
-    get:
-      tags:
-        - 門診病歷
-      summary: 取得門診病歷
-      description: 取得門診病歷資料
-      operationId: get_VisitNote
-      parameters: 
-        - name: VisitNote_Id
-          in: path
-          description: ID of VisitNote to return
-          required: true
-          schema:
-            type: string
-            format: string
-      responses:
-        '200':
-          description: "message: GET"
+
     put:
       tags:
         - 門診病歷
