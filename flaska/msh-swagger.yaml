@@ -37,8 +37,8 @@ info:
     - [電話 : 02-66126262]
     - [分機 : 14711 ]
 
-    - [WIA FHIR Portal](http://211.73.81.25:8000/)
-    - [WIA FHIR server](http://211.73.81.25:8080/)
+    - [WIA FHIR Portal](http://192.168.211.9:8000/)
+    - [WIA FHIR server](http://192.168.211.9:8080/)
   contact:
     email: Gojim.Yu@wiadvance.com
   license:
@@ -49,12 +49,9 @@ externalDocs:
   description: Find out more about 緯謙科技
   url: https://www.wiadvance.com/
 servers:
-  - url: http://211.73.81.25:8100
+  - url: http://192.168.211.9:8100
     description: 敏盛資料
-  - url: http://202.5.253.182:8100
-    description: 敏盛虛擬資料
-  - url: http://104.208.68.39:8100
-    description: 緯謙虛擬資料
+
 tags:
   - name: 交換單張
     description: 公告交換單張標準
