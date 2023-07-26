@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: 敏盛醫院 單張交換 to FHIR - API 使用說明書
   description: |-
-    新光醫院 交換單張 XML to FHIR :
+    敏盛醫院 交換單張 XML to FHIR :
 
             API 0.1.0 based on the OpenAPI 3.0 specification.
 
